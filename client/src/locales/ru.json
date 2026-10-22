@@ -2016,6 +2016,7 @@
           "comicvine": "Метаданные книги комиксов от ComicVine. Требуется бесплатный ключ API с comicvine.gamespot.com.",
           "ranobedb": "Японские светлые метаданные из RanobeDB. Установка не требуется.",
           "lubimyczytac": "Каталог польских книг (lubimyczytac.pl). Страницы публичных книг не требуются.",
+          "mangabaka": "Manga and light novel metadata from MangaBaka. No setup required.",
           "aladin": "Метаданные корейских книг из Aladin (알라딘). Требуется ключ TTB с сайта aladin.co.kr."
         },
         "blocked": {
@@ -2080,6 +2081,10 @@
           "existingProviderIdsOnly": {
             "label": "Использовать только существующие ID провайдера",
             "hint": "Для книг уже в библиотеке, запрашивать только провайдеры с сохраненным идентификатором и никогда не возвращаться к поиску при сбое поиска ID. Ручной поиск и поиск новой книги не затрагиваются."
+          },
+          "richTitleFormat": {
+            "label": "Rich title format for manga volumes",
+            "hint": "Compose volume titles as \"Series, Vol. NN: Subtitle, Ch NNNN\" instead of the simpler \"Series, Vol. NN - Ch NNN\". Applies to MangaBaka only."
           }
         },
         "library": {
@@ -6778,6 +6783,23 @@
           "providerFailed": "{provider} не может быть достигнут.",
           "searchInterruptedHint": "Попробуйте еще раз или сузить область поиска.",
           "searchPrompt": "Поиск выше, затем нажмите на результат, чтобы начать сравнение метаданных."
+        },
+        "mangabakaDrillDown": {
+          "sectionTitle": "MangaBaka Volumes",
+          "seriesLabel": "MangaBaka series",
+          "browseVolumes": "Browse Volumes",
+          "loadingCollections": "Loading collections...",
+          "noCollections": "No collections found for this series.",
+          "loadingVolumes": "Loading volumes...",
+          "noVolumes": "No volumes found.",
+          "volumeLabel": "Vol. {n}",
+          "volumeLabelUnknown": "Vol. ?",
+          "totalVolumeLabel": "Total Vol. {n}",
+          "coverAlt": "Volume {index} cover for {series}",
+          "volumeSelectLabel": "Select {title} ({volume})",
+          "loadError": "Couldn't load data. Please try again.",
+          "retry": "Retry",
+          "selectVolume": "Select this volume"
         },
         "match": {
           "sheetDescription": "Поиск провайдеров метаданных и выбор копирования в эту книгу.",

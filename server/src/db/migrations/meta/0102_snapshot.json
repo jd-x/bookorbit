@@ -6711,6 +6711,18 @@
           "primaryKey": false,
           "notNull": false
         },
+        "mangabaka_id": {
+          "name": "mangabaka_id",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "mangabaka_series_id": {
+          "name": "mangabaka_series_id",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false
+        },
         "chapters": {
           "name": "chapters",
           "type": "jsonb",
