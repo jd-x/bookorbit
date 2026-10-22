@@ -382,6 +382,19 @@ export const METADATA_PROVIDER_SUPPORTED_FIELDS: Record<MetadataProviderKey, rea
     "seriesName",
     "genres",
   ],
+  [MetadataProviderKey.MANGABAKA]: [
+    "title",
+    "description",
+    "cover",
+    "authors",
+    "publisher",
+    "isbn",
+    "publishedYear",
+    "language",
+    "pageCount",
+    "seriesName",
+    "genres",
+  ],
 };
 
 /** How a provider stands against one field: it can fill it, its cover art is the other shape, or never. */
