@@ -4,6 +4,7 @@ import {
   MangabakaCollectionSummary,
   METADATA_PROVIDER_STATUS_EVENT,
   MetadataCacheRequestPolicy,
+  MetadataCandidate,
   MetadataProviderInfo,
   MetadataProviderKey,
   MetadataSearchCandidateEvent,
