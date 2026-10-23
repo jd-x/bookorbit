@@ -5,6 +5,7 @@ import { basename, dirname, join, relative } from 'path';
 import { compareBookFilePaths } from '../../../common/utils/audio-track-order.utils';
 import { buildNameExcludeMatcher, walkDirectoryTree, WALK_MAX_PATH_LENGTH } from '../../../common/fs-walk.utils';
 import { classifyFile, isPrimaryFormat, isAudioFormat, type FileRole } from './classify';
+import { deriveFolderSeries, type DerivedSeries } from './folder-series';
 
 export interface FileStat {
   absolutePath: string;
@@ -20,6 +21,12 @@ export interface FileStat {
 export interface BookCandidate {
   folderPath: string; // absolute path — unique key for a book in the DB
   files: FileStat[]; // all files in this folder
+  derivedSeries?: DerivedSeries;
+}
+
+export interface LooseFileWalkOptions {
+  // Directory scans start below the library folder, so the root is passed explicitly.
+  deriveSeriesFromFolder?: { libraryRoot: string };
 }
 
 export interface WalkResult {
@@ -305,6 +312,7 @@ export async function findLooseFileCandidates(
   excludePatterns: string[] = [],
   logger?: (msg: string) => void,
   knownDirMtimes?: Map<string, number>,
+  options: LooseFileWalkOptions = {},
 ): Promise<WalkResult> {
   const byDir = new Map<string, FileStat[]>();
   const shouldExclude = buildNameExcludeMatcher(excludePatterns);
@@ -313,12 +321,25 @@ export async function findLooseFileCandidates(
   const skippedDirs = await collectByDir(libraryFolderPath, byDir, shouldExclude, logger, knownDirMtimes, unchangedDirs, dirMtimes);
 
   const candidates: BookCandidate[] = [];
+  const seriesRoot = options.deriveSeriesFromFolder?.libraryRoot;
 
-  for (const files of byDir.values()) {
-    for (const fileStat of files) {
-      if (isPrimaryFormat(fileStat.absolutePath)) {
-        candidates.push({ folderPath: fileStat.absolutePath, files: [fileStat] });
-      }
+  for (const [dir, files] of byDir) {
+    const contentFiles = files.filter((fileStat) => isPrimaryFormat(fileStat.absolutePath));
+    // Numbering depends on every sibling in the directory, so it is decided here.
+    const seriesByPath = seriesRoot
+      ? deriveFolderSeries(
+          dir,
+          contentFiles.map((fileStat) => fileStat.absolutePath),
+          seriesRoot,
+        )
+      : null;
+    for (const fileStat of contentFiles) {
+      const derivedSeries = seriesByPath?.get(fileStat.absolutePath);
+      candidates.push(
+        derivedSeries
+          ? { folderPath: fileStat.absolutePath, files: [fileStat], derivedSeries }
+          : { folderPath: fileStat.absolutePath, files: [fileStat] },
+      );
     }
   }
 

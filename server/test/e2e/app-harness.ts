@@ -123,12 +123,10 @@ export async function createE2EContext(options: { isolateAppData?: boolean; mult
     isolatedAppData = { path: await mkdtemp(join(tmpdir(), 'bookorbit-e2e-data-')), previous: process.env.APP_DATA_PATH };
     process.env.APP_DATA_PATH = isolatedAppData.path;
   }
-  const moduleFixture = await Test.createTestingModule({
+  const builder = Test.createTestingModule({
     imports: [AppModule],
-  })
-    .overrideProvider(MetadataService)
-    .useValue(makeMetadataNoopMock())
-    .compile();
+  });
+  const moduleFixture = await (options.realMetadata ? builder : builder.overrideProvider(MetadataService).useValue(makeMetadataNoopMock())).compile();
 
   const app = moduleFixture.createNestApplication<NestFastifyApplication>(new FastifyAdapter());
   app.setGlobalPrefix('api/v1');
@@ -166,6 +164,8 @@ export interface SeedLibraryInput {
   excludePatterns?: string[];
   watch?: boolean;
   name?: string;
+  deriveSeriesFromFolder?: boolean;
+  metadataPrecedence?: string[];
 }
 
 export async function seedLibrary(db: Db, input: SeedLibraryInput): Promise<{ libraryId: number; libraryFolderId: number }> {
@@ -176,6 +176,8 @@ export async function seedLibrary(db: Db, input: SeedLibraryInput): Promise<{ li
       name: input.name ?? `e2e-${input.mode}-${randomUUID()}`,
       watch: input.watch ?? false,
       organizationMode: input.mode,
+      deriveSeriesFromFolder: input.deriveSeriesFromFolder ?? false,
+      ...(input.metadataPrecedence ? { metadataPrecedence: input.metadataPrecedence } : {}),
       allowedFormats: input.allowedFormats ?? [],
       excludePatterns: input.excludePatterns ?? [],
       formatPriority: [...DEFAULT_FORMAT_PRIORITY],
