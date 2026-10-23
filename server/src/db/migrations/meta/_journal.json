@@ -883,6 +883,13 @@
       "when": 1791121374848,
       "tag": "0125_add_mangabaka_columns",
       "breakpoints": true
+    },
+    {
+      "idx": 126,
+      "version": "7",
+      "when": 1791097126506,
+      "tag": "0126_add_derive_series_from_folder",
+      "breakpoints": true
     }
   ]
 }

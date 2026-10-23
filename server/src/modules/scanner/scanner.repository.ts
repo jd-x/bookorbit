@@ -113,6 +113,7 @@ export class ScannerRepository {
         regexMetadata: libraries.regexMetadata,
         excludePatterns: libraries.excludePatterns,
         organizationMode: libraries.organizationMode,
+        deriveSeriesFromFolder: libraries.deriveSeriesFromFolder,
         addedAtSource: libraries.addedAtSource,
       })
       .from(libraries)
